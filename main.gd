@@ -9,6 +9,7 @@ const SAVE_PATH := "user://save.json"
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	load_game()
+	world.initialize_ores()
 	world.initialize_chunks()
 
 
@@ -22,7 +23,8 @@ func save_game():
 		"player_x" = player.global_position.x,
 		"player_y" = player.global_position.y,
 		"inventory" = player.get_player_save_data(),
-		"block overrides" = world.get_save_data()
+		"block overrides" = world.get_save_data(),
+		"seed" = world.world_seed
 	}
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify(save_data))
@@ -43,6 +45,7 @@ func load_game():
 	player.global_position = Vector2(float(save_data["player_x"]), float(save_data["player_y"]))
 	player.load_player_save_data(save_data["inventory"])
 	world.load_save_data(save_data["block overrides"])
+	world.world_seed = int(save_data.get("seed", 12345))
 	print("World loaded!")
 	
 func _notification(what):

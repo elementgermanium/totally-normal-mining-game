@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="OreDefinition" format=3 uid="uid://ippbag44hpy5"]
+
+[ext_resource type="Resource" uid="uid://7hvfsyn3audu" path="res://materials/coal.tres" id="1_a8kb1"]
+[ext_resource type="Script" uid="uid://bwyi8egamio66" path="res://ores/ore_definition.gd" id="2_ans7f"]
+
+[resource]
+script = ExtResource("2_ans7f")
+ore_material = ExtResource("1_a8kb1")
+metadata/_custom_type_script = "uid://bwyi8egamio66"

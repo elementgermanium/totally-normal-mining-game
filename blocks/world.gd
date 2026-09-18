@@ -2,6 +2,9 @@ extends Node2D
 @export var dirt: BlockMaterial
 @export var stone: BlockMaterial
 @export var air: BlockMaterial
+@export var coal: BlockMaterial
+@export var ores: Array[OreDefinition] = []
+var ore_noises: Dictionary = {}
 const CHUNK_SIZE = 16
 const BLOCK_SIZE = 64
 @onready var player = $"../Player"
@@ -10,6 +13,17 @@ var block_scene = preload("res://blocks/block.tscn")
 const RENDER_DISTANCE := 1
 var current_player_chunk: Vector2i
 var block_overrides: Dictionary = {}
+var world_seed: int = 12345
+var coal_noise = FastNoiseLite.new()
+
+func initialize_ores():
+	ore_noises.clear()
+	for ore in ores:
+		var noise = FastNoiseLite.new()
+		noise.seed = world_seed + ore.seed_offset
+		noise.frequency = ore.frequency
+		ore_noises[ore] = noise
+
 
 func initialize_chunks():
 	current_player_chunk = get_player_chunk()
@@ -30,13 +44,27 @@ func spawn_block(location: Vector2i, block_material: BlockMaterial, chunk: Node2
 	block.set_block_material(block_material)
 	chunk.add_child(block)
 
+func get_ore_at(location: Vector2i) -> BlockMaterial:
+	for ore in ores:
+		if location.y > ore.max_depth:
+			continue
+		if location.y < ore.min_depth:
+			continue
+		var noise = ore_noises[ore]
+		var noise_value = noise.get_noise_2d(location.x, location.y)
+		if noise_value > ore.threshold:
+			return ore.ore_material
+	return null
+
 func get_natural_material_at(location: Vector2i) -> BlockMaterial:
 	if location.y < 0:
 		return air
-	elif location.y < 5:
+	if location.y < 3:
 		return dirt
-	else:
-		return stone
+	var ore = get_ore_at(location)
+	if ore != null:
+		return ore
+	return stone
 
 func generate_chunk(chunk_x: int, chunk_y: int):
 	var chunk_position = Vector2i(chunk_x, chunk_y)
