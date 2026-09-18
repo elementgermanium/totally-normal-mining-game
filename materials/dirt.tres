@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="BlockMaterial" format=3 uid="uid://imh2twda1mls"]
+
+[ext_resource type="Script" uid="uid://c22rrogwrqrvd" path="res://blocks/block_material.gd" id="1_5hcu8"]
+
+[resource]
+script = ExtResource("1_5hcu8")
+material_name = "Dirt"
+color = Color(1, 0, 1, 1)
+metadata/_custom_type_script = "uid://c22rrogwrqrvd"

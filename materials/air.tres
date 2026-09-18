@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BlockMaterial" format=3 uid="uid://ihx6x2yaae5j"]
+
+[ext_resource type="Script" uid="uid://c22rrogwrqrvd" path="res://blocks/block_material.gd" id="1_83ybg"]
+
+[resource]
+script = ExtResource("1_83ybg")
+material_name = "Air"
+hardness = 0.0
+mining_time = 0.01
+color = Color(1, 1, 1, 0)
+metadata/_custom_type_script = "uid://c22rrogwrqrvd"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BlockMaterial" format=3 uid="uid://vx8xe7x0lc27"]
+
+[ext_resource type="Script" uid="uid://c22rrogwrqrvd" path="res://blocks/block_material.gd" id="1_2f13b"]
+
+[resource]
+script = ExtResource("1_2f13b")
+material_name = "Stone"
+hardness = 2.0
+mining_time = 2.0
+color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+metadata/_custom_type_script = "uid://c22rrogwrqrvd"
