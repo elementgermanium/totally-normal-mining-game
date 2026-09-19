@@ -119,6 +119,13 @@ func get_material_at(location: Vector2i) -> BlockMaterial:
 func mark_block_mined(location: Vector2i):
 	block_overrides[location] = air
 
+func place_block(location: Vector2i, block: BlockMaterial):
+	block_overrides[location] = block
+	var chunk_position = Vector2i(floori(float(location.x) / CHUNK_SIZE), floori(float(location.y) / CHUNK_SIZE))
+	if loaded_chunks.has(chunk_position):
+		var chunk = loaded_chunks[chunk_position]
+		spawn_block(location, block, chunk)
+
 func unload_distant_chunks():
 	var chunks_to_unload = []
 	for chunk_position in loaded_chunks:

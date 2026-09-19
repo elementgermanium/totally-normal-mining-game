@@ -6,10 +6,13 @@ const JUMP_VELOCITY = -400.0
 var mining_range = 250
 var mining_target = null
 var mining_progress: float = 0.0
+var placement_range = 250
 
 @onready var inventory_label = $"../UI/InventoryLabel"
 @onready var mining_bar = $"../UI/MiningProgress"
 @onready var world = $"../Blocks"
+
+var half_block = 32
 
 func update_inventory_display():
 	var text = "Inventory:\n"
@@ -70,6 +73,20 @@ func _process(delta):
 		continue_mining(delta)
 	else:
 		stop_mining()
+	if Input.is_action_just_pressed("use_item"):
+		var mouse_position = get_global_mouse_position()
+		var target = get_mouse_block_position()
+		var current_block = world.get_material_at(target)
+		if global_position.distance_to(mouse_position) <= placement_range:
+			if current_block == world.air:
+				if inventory[world.dirt] > 0:
+					world.place_block(target, world.dirt)
+					inventory[world.dirt] -= 1
+					update_inventory_display()
+
+func get_mouse_block_position() -> Vector2i:
+	var mouse_position = get_global_mouse_position()
+	return Vector2i(floori((mouse_position.x + half_block) / world.BLOCK_SIZE), floori((mouse_position.y + half_block) / world.BLOCK_SIZE) - 2)
 
 func continue_mining(delta):
 	var target = get_mining_target()
