@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WorldLayer" format=3 uid="uid://c1mvd7kd7is8w"]
+
+[ext_resource type="Resource" uid="uid://vx8xe7x0lc27" path="res://materials/stone.tres" id="1_lfeb6"]
+[ext_resource type="Script" uid="uid://bwyi8egamio66" path="res://ores/ore_definition.gd" id="1_vlk8v"]
+[ext_resource type="Script" uid="uid://blig3hggtxrnn" path="res://world_layer.gd" id="2_gv5v4"]
+[ext_resource type="Resource" uid="uid://ippbag44hpy5" path="res://ores/coal_ore.tres" id="3_jurhj"]
+[ext_resource type="Resource" uid="uid://b60no8nypy8md" path="res://ores/iron_ore.tres" id="4_gtxxf"]
+
+[resource]
+script = ExtResource("2_gv5v4")
+layer_name = "Stone Layer"
+base_material = ExtResource("1_lfeb6")
+ores = Array[ExtResource("1_vlk8v")]([ExtResource("3_jurhj"), ExtResource("4_gtxxf")])
+metadata/_custom_type_script = "uid://blig3hggtxrnn"

@@ -9,6 +9,7 @@ const SAVE_PATH := "user://save.json"
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	load_game()
+	world.initialize_layers()
 	world.initialize_ores()
 	world.initialize_chunks()
 

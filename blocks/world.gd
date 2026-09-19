@@ -4,6 +4,8 @@ extends Node2D
 @export var air: BlockMaterial
 @export var coal: BlockMaterial
 @export var ores: Array[OreDefinition] = []
+@export var layers: Array[WorldLayer] = []
+var layer_starts: Array[int] = []
 var ore_noises: Dictionary = {}
 const CHUNK_SIZE = 16
 const BLOCK_SIZE = 64
@@ -16,18 +18,26 @@ var block_overrides: Dictionary = {}
 var world_seed: int = 12345
 var coal_noise = FastNoiseLite.new()
 
-func initialize_ores():
-	ore_noises.clear()
-	for ore in ores:
-		var noise = FastNoiseLite.new()
-		noise.seed = world_seed + ore.seed_offset
-		noise.frequency = ore.frequency
-		ore_noises[ore] = noise
-
 
 func initialize_chunks():
 	current_player_chunk = get_player_chunk()
 	update_chunks()
+
+func initialize_layers():
+	layer_starts.clear()
+	var depth := 0
+	for layer in layers:
+		layer_starts.append(depth)
+		depth += layer.thickness
+
+func initialize_ores():
+	ore_noises.clear()
+	for layer in layers:
+		for ore in layer.ores:
+			var noise = FastNoiseLite.new()
+			noise.seed = world_seed + ore.seed_offset
+			noise.frequency = ore.frequency
+			ore_noises[ore] = noise
 
 func _process(_delta):
 	var new_player_chunk = get_player_chunk()
@@ -44,11 +54,12 @@ func spawn_block(location: Vector2i, block_material: BlockMaterial, chunk: Node2
 	block.set_block_material(block_material)
 	chunk.add_child(block)
 
-func get_ore_at(location: Vector2i) -> BlockMaterial:
-	for ore in ores:
-		if location.y > ore.max_depth:
+func get_ore_at(location: Vector2i, layer: WorldLayer, layer_start: int) -> BlockMaterial:
+	var local_y = location.y - layer_start
+	for ore in layer.ores:
+		if local_y > ore.max_depth:
 			continue
-		if location.y < ore.min_depth:
+		if local_y < ore.min_depth:
 			continue
 		var noise = ore_noises[ore]
 		var noise_value = noise.get_noise_2d(location.x, location.y)
@@ -59,12 +70,15 @@ func get_ore_at(location: Vector2i) -> BlockMaterial:
 func get_natural_material_at(location: Vector2i) -> BlockMaterial:
 	if location.y < 0:
 		return air
-	if location.y < 3:
-		return dirt
-	var ore = get_ore_at(location)
+	var layer := get_layer_at_depth(location.y)
+	var layer_index := get_layer_index_at_depth(location.y)
+	if layer == null:
+		return air
+	var layer_start := layer_starts[layer_index]
+	var ore = get_ore_at(location, layer, layer_start)
 	if ore != null:
 		return ore
-	return stone
+	return layer.base_material
 
 func generate_chunk(chunk_x: int, chunk_y: int):
 	var chunk_position = Vector2i(chunk_x, chunk_y)
@@ -129,3 +143,25 @@ func load_save_data(data: Array):
 		var location = Vector2i(int(entry["x"]), int(entry["y"]))
 		var block_material = load(entry["material"])
 		block_overrides[location] = block_material
+
+func get_layer_index_at_depth(y: int) -> int:
+	var low := 0
+	var high := layer_starts.size() - 1
+	while low <= high:
+		@warning_ignore("integer_division")
+		var mid := (high + low) / 2
+		var start := layer_starts[mid]
+		var end := start + layers[mid].thickness
+		if y < start:
+			high = mid - 1
+		elif y >= end:
+			low = mid+1
+		else: 
+			return mid
+	return -1
+
+func get_layer_at_depth(y: int) -> WorldLayer:
+	var index = get_layer_index_at_depth(y)
+	if index == -1:
+		return null
+	return layers[index]

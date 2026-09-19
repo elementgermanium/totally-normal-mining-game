@@ -7,9 +7,9 @@
 [ext_resource type="Resource" uid="uid://vx8xe7x0lc27" path="res://materials/stone.tres" id="4_lquwl"]
 [ext_resource type="Resource" uid="uid://ihx6x2yaae5j" path="res://materials/air.tres" id="6_7mycd"]
 [ext_resource type="Resource" uid="uid://7hvfsyn3audu" path="res://materials/coal.tres" id="7_272bh"]
-[ext_resource type="Resource" uid="uid://ippbag44hpy5" path="res://ores/coal_ore.tres" id="8_5vw27"]
-[ext_resource type="Script" uid="uid://bwyi8egamio66" path="res://ores/ore_definition.gd" id="8_kek77"]
-[ext_resource type="Resource" uid="uid://b60no8nypy8md" path="res://ores/iron_ore.tres" id="10_4c57u"]
+[ext_resource type="Script" uid="uid://blig3hggtxrnn" path="res://world_layer.gd" id="8_4c57u"]
+[ext_resource type="Resource" uid="uid://u7l0cogxmdw2" path="res://layers/dirt_layer.tres" id="9_efxa6"]
+[ext_resource type="Resource" uid="uid://c1mvd7kd7is8w" path="res://layers/stone_layer.tres" id="10_dg77c"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_jxauj"]
 size = Vector2(48, 112)
@@ -31,6 +31,7 @@ texture = SubResource("PlaceholderTexture2D_jxauj")
 shape = SubResource("RectangleShape2D_tsyb3")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1155315127]
+zoom = Vector2(0.3, 0.3)
 position_smoothing_enabled = true
 
 [node name="Blocks" type="Node2D" parent="." unique_id=336991214]
@@ -39,7 +40,7 @@ dirt = ExtResource("3_1bvp3")
 stone = ExtResource("4_lquwl")
 air = ExtResource("6_7mycd")
 coal = ExtResource("7_272bh")
-ores = Array[ExtResource("8_kek77")]([ExtResource("8_5vw27"), ExtResource("10_4c57u")])
+layers = Array[ExtResource("8_4c57u")]([ExtResource("9_efxa6"), ExtResource("10_dg77c")])
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1883444133]
 
