@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Tool" format=3 uid="uid://cqkl3pn25wkj1"]
+
+[ext_resource type="Script" uid="uid://b8x8xcjcjh7x8" path="res://tool.gd" id="1_xyhtl"]
+
+[resource]
+script = ExtResource("1_xyhtl")
+mining_speed = 1.5
+power = 2.0
+item_name = "Dirt Pickaxe"
+metadata/_custom_type_script = "uid://b8x8xcjcjh7x8"

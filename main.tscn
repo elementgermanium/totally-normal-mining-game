@@ -31,7 +31,6 @@ texture = SubResource("PlaceholderTexture2D_jxauj")
 shape = SubResource("RectangleShape2D_tsyb3")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1155315127]
-zoom = Vector2(0.3, 0.3)
 position_smoothing_enabled = true
 
 [node name="Blocks" type="Node2D" parent="." unique_id=336991214]
@@ -72,5 +71,15 @@ offset_top = 62.0
 offset_right = 976.0
 offset_bottom = 462.0
 
-[node name="InventoryList" type="VBoxContainer" parent="UI/InventoryMenu" unique_id=864594966]
+[node name="ToolLabel" type="Label" parent="UI/InventoryMenu" unique_id=981325278]
 layout_mode = 2
+size_flags_vertical = 0
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/InventoryMenu" unique_id=1856062047]
+layout_mode = 2
+
+[node name="InventoryList" type="VBoxContainer" parent="UI/InventoryMenu/ScrollContainer" unique_id=864594966]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 10

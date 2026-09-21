@@ -6,21 +6,23 @@ const JUMP_VELOCITY = -400.0
 var mining_range = 250
 var mining_target = null
 var mining_progress: float = 0.0
+var mining_power: float = 1.0
 var placement_range = 250
 var selected_slot: int = 0
 var hotbar: Array[Item] = []
 const HOTBAR_SIZE = 10
+var equipped_tool: Tool = null
 
 @onready var mining_bar = $"../UI/MiningProgress"
 @onready var world = $"../Blocks"
 @onready var hotbar_ui = $"../UI/Hotbar"
 @onready var inventory_menu = $"../UI/InventoryMenu"
-@onready var inventory_list = $"../UI/InventoryMenu/InventoryList"
+@onready var inventory_list = $"../UI/InventoryMenu/ScrollContainer/InventoryList"
+@onready var equipment_label = $"../UI/InventoryMenu/ToolLabel"
 
 var hotbar_slot_scene = preload("res://UI/hotbar_slot.tscn")
 var inventory_entry_scene = preload("res://UI/inventory_entry.tscn")
 var half_block = 32
-
 
 func initialize_hotbar_ui():
 	for i in range(HOTBAR_SIZE):
@@ -51,11 +53,33 @@ func update_inventory_menu():
 		var entry = inventory_entry_scene.instantiate()
 		inventory_list.add_child(entry)
 		entry.setup(slot.item, slot.amount)
-		entry.pressed.connect(func(): assign_item_to_hotbar(slot.item))
+		entry.pressed.connect(func(): use_inventory_item(slot.item))
+	update_equipment_display()
+
+func use_inventory_item(item: Item):
+	if item is Tool:
+		equip_tool(item)
+	else:
+		assign_item_to_hotbar(item)
 
 func assign_item_to_hotbar(item: Item):
 	hotbar[selected_slot] = item
 	update_hotbar_display()
+
+func equip_tool(item: Tool):
+	if equipped_tool == item:
+		equipped_tool = null
+		mining_power = 1
+	else:
+		equipped_tool = item
+		mining_power = equipped_tool.power
+	update_inventory_menu()
+
+func update_equipment_display():
+	if equipped_tool == null:
+		equipment_label.text = "Tool: None"
+	else:
+		equipment_label.text = "Tool: " + equipped_tool.item_name
 
 func toggle_inventory():
 	inventory_menu.visible = not inventory_menu.visible
@@ -178,21 +202,26 @@ func get_mouse_block_position() -> Vector2i:
 
 func continue_mining(delta):
 	var target = get_mining_target()
-	
 	if target == null:
 		stop_mining()
 		return
-	
 	if target != mining_target:
 		mining_target = target
 		mining_progress = 0.0
-	
-	mining_progress += delta
+	if target.block_material.hardness > mining_power:
+		return
+	mining_progress += delta * get_mining_speed()
 	mining_bar.value = mining_progress / mining_target.block_material.mining_time
 	mining_bar.visible = true
 	
 	if mining_progress >= mining_target.block_material.mining_time:
 		finish_mining()
+
+func get_mining_speed():
+	if equipped_tool != null:
+		return equipped_tool.mining_speed
+	else:
+		return 1
 
 func stop_mining():
 	mining_target = null
@@ -234,3 +263,17 @@ func load_hotbar_save_data(data: Array):
 	for i in range(min(data.size(), HOTBAR_SIZE)):
 		if data[i] != null:
 			hotbar[i] = load(data[i]) as Item
+
+func save_equipped_item():
+	var data
+	if equipped_tool == null:
+		data = "None"
+	else:
+		data = equipped_tool.resource_path
+	return data
+
+func load_equipped_tool(data):
+	if data == "None":
+		equipped_tool = null
+	else: 
+		equipped_tool = load(data) as Item

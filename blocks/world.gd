@@ -12,7 +12,7 @@ const BLOCK_SIZE = 64
 @onready var player = $"../Player"
 var loaded_chunks: Dictionary = {}
 var block_scene = preload("res://blocks/block.tscn")
-const RENDER_DISTANCE := 1
+const RENDER_DISTANCE := 2
 var current_player_chunk: Vector2i
 var block_overrides: Dictionary = {}
 var world_seed: int = 12345

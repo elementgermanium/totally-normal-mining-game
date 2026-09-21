@@ -29,7 +29,8 @@ func save_game():
 		"block overrides" = world.get_save_data(),
 		"seed" = world.world_seed,
 		"hotbar" = player.get_hotbar_save_data(),
-		"selected_slot" = player.selected_slot
+		"selected_slot" = player.selected_slot,
+		"equipped_tool" = player.save_equipped_item()
 	}
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify(save_data))
@@ -56,6 +57,7 @@ func load_game():
 	world.load_save_data(save_data["block overrides"])
 	player.load_hotbar_save_data(hotbar_data)
 	player.selected_slot = int(save_data.get("selected_slot", 0))
+	player.load_equipped_tool(save_data["equipped_tool"])
 	world.world_seed = int(save_data.get("seed", 12345))
 	print("World loaded!")
 	
