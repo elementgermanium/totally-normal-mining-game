@@ -1,9 +1,16 @@
 [gd_resource type="Resource" script_class="BlockMaterial" format=3 uid="uid://imh2twda1mls"]
 
 [ext_resource type="Script" uid="uid://c22rrogwrqrvd" path="res://blocks/block_material.gd" id="1_5hcu8"]
+[ext_resource type="Script" uid="uid://ck3le3mcgya1p" path="res://item.gd" id="1_xp3nn"]
+
+[sub_resource type="Resource" id="Resource_by8an"]
+script = ExtResource("1_xp3nn")
+metadata/_custom_type_script = "uid://ck3le3mcgya1p"
 
 [resource]
 script = ExtResource("1_5hcu8")
-material_name = "Dirt"
 color = Color(1, 0, 1, 1)
+drops_self = true
+dropped_item = SubResource("Resource_by8an")
+item_name = "Dirt"
 metadata/_custom_type_script = "uid://c22rrogwrqrvd"

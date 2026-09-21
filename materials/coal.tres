@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="BlockMaterial" format=3 uid="uid://7hvfsyn3audu"]
 
+[ext_resource type="Resource" uid="uid://d5a0t7nhu5kf" path="res://items/coal_item.tres" id="1_ij4dr"]
 [ext_resource type="Script" uid="uid://c22rrogwrqrvd" path="res://blocks/block_material.gd" id="1_twvop"]
 
 [resource]
 script = ExtResource("1_twvop")
-material_name = "Coal"
 hardness = 1.5
 mining_time = 1.5
 color = Color(0.08468992, 0.08468992, 0.08468992, 1)
+dropped_item = ExtResource("1_ij4dr")
+item_name = "Coal Ore"
 metadata/_custom_type_script = "uid://c22rrogwrqrvd"

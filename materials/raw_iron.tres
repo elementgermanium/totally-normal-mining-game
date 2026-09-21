@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="BlockMaterial" format=3 uid="uid://bjn2x4b6sjq3m"]
 
+[ext_resource type="Resource" uid="uid://c0b5p7u6g4j76" path="res://items/raw_iron.tres" id="1_10d28"]
 [ext_resource type="Script" uid="uid://c22rrogwrqrvd" path="res://blocks/block_material.gd" id="1_ai64g"]
 
 [resource]
 script = ExtResource("1_ai64g")
-material_name = "Raw Iron"
 hardness = 3.0
 mining_time = 3.0
 color = Color(0.6452204, 0.48729444, 0.4376764, 1)
+dropped_item = ExtResource("1_10d28")
+item_name = "Iron Ore"
 metadata/_custom_type_script = "uid://c22rrogwrqrvd"

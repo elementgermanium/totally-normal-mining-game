@@ -44,12 +44,6 @@ layers = Array[ExtResource("8_4c57u")]([ExtResource("9_efxa6"), ExtResource("10_
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1883444133]
 
-[node name="InventoryLabel" type="Label" parent="UI" unique_id=1208894651]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 78.0
-offset_bottom = 65.0
-
 [node name="MiningProgress" type="ProgressBar" parent="UI" unique_id=2032158677]
 visible = false
 offset_left = 510.0
@@ -58,3 +52,25 @@ offset_right = 648.0
 offset_bottom = 251.0
 max_value = 1.0
 show_percentage = false
+
+[node name="Hotbar" type="HBoxContainer" parent="UI" unique_id=460360344]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.87000006
+anchor_right = 0.5
+anchor_bottom = 0.87000006
+offset_left = -336.0
+offset_top = -13.760071
+offset_right = -296.0
+offset_bottom = 26.23993
+alignment = 1
+
+[node name="InventoryMenu" type="PanelContainer" parent="UI" unique_id=2123511223]
+visible = false
+offset_left = 176.0
+offset_top = 62.0
+offset_right = 976.0
+offset_bottom = 462.0
+
+[node name="InventoryList" type="VBoxContainer" parent="UI/InventoryMenu" unique_id=864594966]
+layout_mode = 2

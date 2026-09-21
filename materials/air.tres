@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_83ybg")
-material_name = "Air"
 hardness = 0.0
 mining_time = 0.01
 color = Color(1, 1, 1, 0)
+item_name = "Air"
 metadata/_custom_type_script = "uid://c22rrogwrqrvd"

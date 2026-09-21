@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_2f13b")
-material_name = "Stone"
 hardness = 2.0
 mining_time = 2.0
 color = Color(0.49803922, 0.49803922, 0.49803922, 1)
+drops_self = true
+item_name = "Stone"
 metadata/_custom_type_script = "uid://c22rrogwrqrvd"

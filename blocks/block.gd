@@ -11,7 +11,11 @@ func set_block_material(new_material: BlockMaterial):
 
 
 
-func mine() -> BlockMaterial:
-	var mined_material = block_material
+func mine() -> Item:
+	var drop
+	if block_material.drops_self == true:
+		drop = block_material
+	else:
+		drop = block_material.dropped_item
 	queue_free()
-	return mined_material
+	return drop

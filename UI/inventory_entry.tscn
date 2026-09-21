@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dp0hu5u3e4gam"]
+
+[ext_resource type="Script" uid="uid://cw1j6jsngeqdk" path="res://UI/inventory_entry.gd" id="1_xhaex"]
+
+[node name="InventoryEntry" type="Button" unique_id=698805557]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_xhaex")

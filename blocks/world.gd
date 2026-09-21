@@ -117,10 +117,16 @@ func get_material_at(location: Vector2i) -> BlockMaterial:
 	return get_natural_material_at(location)
 
 func mark_block_mined(location: Vector2i):
-	block_overrides[location] = air
+	var natural_block = get_natural_material_at(location)
+	if natural_block == air:
+		block_overrides.erase(location)
+	else: block_overrides[location] = air
 
 func place_block(location: Vector2i, block: BlockMaterial):
-	block_overrides[location] = block
+	var natural_block = get_natural_material_at(location)
+	if natural_block == block:
+		block_overrides.erase(location)
+	else: block_overrides[location] = block
 	var chunk_position = Vector2i(floori(float(location.x) / CHUNK_SIZE), floori(float(location.y) / CHUNK_SIZE))
 	if loaded_chunks.has(chunk_position):
 		var chunk = loaded_chunks[chunk_position]
