@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://xo7ofbq2pbjd"]
+
+[ext_resource type="Script" uid="uid://b7lihe8c10wuh" path="res://UI/crafting_entry.gd" id="1_jamiu"]
+
+[node name="Button" type="Button" unique_id=1575996739]
+script = ExtResource("1_jamiu")

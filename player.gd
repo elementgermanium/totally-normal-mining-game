@@ -19,9 +19,13 @@ var equipped_tool: Tool = null
 @onready var inventory_menu = $"../UI/InventoryMenu"
 @onready var inventory_list = $"../UI/InventoryMenu/ScrollContainer/InventoryList"
 @onready var equipment_label = $"../UI/InventoryMenu/ToolLabel"
+@onready var crafting_menu = $"../UI/CraftingMenu"
+@onready var crafting_list = $"../UI/CraftingMenu/ScrollContainer/CraftingList"
+@onready var craft_system = $"../CraftingSystem"
 
 var hotbar_slot_scene = preload("res://UI/hotbar_slot.tscn")
 var inventory_entry_scene = preload("res://UI/inventory_entry.tscn")
+var crafting_entry_scene = preload("res://UI/crafting_entry.tscn")
 var half_block = 32
 
 func initialize_hotbar_ui():
@@ -56,6 +60,15 @@ func update_inventory_menu():
 		entry.pressed.connect(func(): use_inventory_item(slot.item))
 	update_equipment_display()
 
+func update_crafting_menu():
+	for child in crafting_list.get_children():
+		child.queue_free()
+	for recipe in craft_system.recipes:
+		var entry = crafting_entry_scene.instantiate()
+		crafting_list.add_child(entry)
+		entry.setup(recipe)
+		entry.pressed.connect(func(): craft(recipe))
+
 func use_inventory_item(item: Item):
 	if item is Tool:
 		equip_tool(item)
@@ -85,6 +98,11 @@ func toggle_inventory():
 	inventory_menu.visible = not inventory_menu.visible
 	if inventory_menu.visible:
 		update_inventory_menu()
+
+func toggle_crafting():
+	crafting_menu.visible = not crafting_menu.visible
+	if crafting_menu.visible:
+		update_crafting_menu()
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -195,6 +213,8 @@ func _unhandled_input(event: InputEvent):
 			update_hotbar_display()
 	if event.is_action_pressed("inventory"):
 		toggle_inventory()
+	if event.is_action_pressed("crafting"):
+		toggle_crafting()
 
 func get_mouse_block_position() -> Vector2i:
 	var mouse_position = get_global_mouse_position()
@@ -277,3 +297,17 @@ func load_equipped_tool(data):
 		equipped_tool = null
 	else: 
 		equipped_tool = load(data) as Item
+		mining_power = equipped_tool.power
+
+func can_craft(recipe: CraftingRecipe) -> bool:
+	for input in recipe.inputs:
+		if get_item_amount(input.item) < input.amount:
+			return false
+	return true
+
+func craft(recipe: CraftingRecipe):
+	for input in recipe.inputs:
+		remove_item(input.item, input.amount)
+	for output in recipe.outputs:
+		add_item(output.item, output.amount)
+	update_inventory_menu()

@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CraftingRecipe" format=3 uid="uid://bfdbxbfe61ynn"]
+
+[ext_resource type="Script" uid="uid://y2jaxkc05jpb" path="res://crafting_ingredient.gd" id="1_0ucob"]
+[ext_resource type="Resource" uid="uid://imh2twda1mls" path="res://materials/dirt.tres" id="2_oq547"]
+[ext_resource type="Resource" uid="uid://cqkl3pn25wkj1" path="res://tools/dirt_pickaxe.tres" id="3_m0uta"]
+[ext_resource type="Script" uid="uid://daakpbe15vetw" path="res://crafting/recipes/recipe.gd" id="3_oq547"]
+
+[sub_resource type="Resource" id="Resource_ycdy4"]
+script = ExtResource("1_0ucob")
+item = ExtResource("2_oq547")
+amount = 5
+metadata/_custom_type_script = "uid://y2jaxkc05jpb"
+
+[sub_resource type="Resource" id="Resource_vivmo"]
+script = ExtResource("1_0ucob")
+item = ExtResource("3_m0uta")
+metadata/_custom_type_script = "uid://y2jaxkc05jpb"
+
+[resource]
+script = ExtResource("3_oq547")
+display_name = "Dirt Pickaxe"
+inputs = Array[ExtResource("1_0ucob")]([SubResource("Resource_ycdy4")])
+outputs = Array[ExtResource("1_0ucob")]([SubResource("Resource_vivmo")])
+metadata/_custom_type_script = "uid://daakpbe15vetw"
