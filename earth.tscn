@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://c5vwj8spdyt6o"]
+
+[ext_resource type="Script" uid="uid://dm3le5aqhhefj" path="res://blocks/world.gd" id="1_lyaad"]
+[ext_resource type="Resource" uid="uid://imh2twda1mls" path="res://materials/dirt.tres" id="2_xlwm0"]
+[ext_resource type="Resource" uid="uid://vx8xe7x0lc27" path="res://materials/stone.tres" id="3_brxpe"]
+[ext_resource type="Resource" uid="uid://ihx6x2yaae5j" path="res://materials/air.tres" id="4_jdvs3"]
+[ext_resource type="Resource" uid="uid://7hvfsyn3audu" path="res://materials/coal.tres" id="5_bf5ir"]
+[ext_resource type="Script" uid="uid://blig3hggtxrnn" path="res://world_layer.gd" id="6_ixar8"]
+[ext_resource type="Resource" uid="uid://u7l0cogxmdw2" path="res://layers/dirt_layer.tres" id="7_sa0ho"]
+[ext_resource type="Resource" uid="uid://c1mvd7kd7is8w" path="res://layers/stone_layer.tres" id="8_e4b54"]
+
+[node name="Earth" type="Node2D" unique_id=765883023]
+script = ExtResource("1_lyaad")
+dirt = ExtResource("2_xlwm0")
+stone = ExtResource("3_brxpe")
+air = ExtResource("4_jdvs3")
+coal = ExtResource("5_bf5ir")
+layers = Array[ExtResource("6_ixar8")]([ExtResource("7_sa0ho"), ExtResource("8_e4b54")])
+world_id = "Earth"

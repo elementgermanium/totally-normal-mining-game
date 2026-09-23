@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://c6s8aj0moj321"]
+
+[ext_resource type="Script" uid="uid://mejtouc8lmqw" path="res://subworld.gd" id="1_rpg24"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jxauj"]
+size = Vector2(367, 20)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_fhybs"]
+
+[node name="Base" type="Node2D" unique_id=1320506670]
+script = ExtResource("1_rpg24")
+world_id = "Base"
+metadata/_custom_type_script = "uid://mejtouc8lmqw"
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=668303225]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1100067271]
+position = Vector2(0.5, 18)
+shape = SubResource("RectangleShape2D_jxauj")
+debug_color = Color(0.5356641, 0.53303003, 0.5545344, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor/CollisionShape2D" unique_id=371807845]
+position = Vector2(1.9073486e-05, 2.3841858e-06)
+scale = Vector2(366.99997, 19.999998)
+texture = SubResource("PlaceholderTexture2D_fhybs")
+
+[node name="Door" type="Button" parent="." unique_id=1867461423]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "TODO
+"

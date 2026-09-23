@@ -1,4 +1,5 @@
-extends Node2D
+extends Subworld
+
 @export var dirt: BlockMaterial
 @export var stone: BlockMaterial
 @export var air: BlockMaterial
@@ -9,15 +10,18 @@ var layer_starts: Array[int] = []
 var ore_noises: Dictionary = {}
 const CHUNK_SIZE = 16
 const BLOCK_SIZE = 64
-@onready var player = $"../Player"
 var loaded_chunks: Dictionary = {}
 var block_scene = preload("res://blocks/block.tscn")
 const RENDER_DISTANCE := 2
 var current_player_chunk: Vector2i
-var block_overrides: Dictionary = {}
 var world_seed: int = 12345
 var coal_noise = FastNoiseLite.new()
 
+func initialize_world():
+	initialize_layers()
+	initialize_ores()
+	initialize_chunks()
+	initialized = true
 
 func initialize_chunks():
 	current_player_chunk = get_player_chunk()
@@ -40,6 +44,8 @@ func initialize_ores():
 			ore_noises[ore] = noise
 
 func _process(_delta):
+	if not initialized:
+		return
 	var new_player_chunk = get_player_chunk()
 	if new_player_chunk != current_player_chunk:
 		current_player_chunk = new_player_chunk
@@ -143,19 +149,7 @@ func unload_distant_chunks():
 		loaded_chunks[chunk_position].queue_free()
 		loaded_chunks.erase(chunk_position)
 
-func get_save_data() -> Array:
-	var data = []
-	for location in block_overrides:
-		var block_material = block_overrides[location]
-		data.append({"x": location.x, "y": location.y, "material": block_material.resource_path})
-	return data
 
-func load_save_data(data: Array):
-	block_overrides.clear()
-	for entry in data:
-		var location = Vector2i(int(entry["x"]), int(entry["y"]))
-		var block_material = load(entry["material"])
-		block_overrides[location] = block_material
 
 func get_layer_index_at_depth(y: int) -> int:
 	var low := 0
@@ -178,3 +172,10 @@ func get_layer_at_depth(y: int) -> WorldLayer:
 	if index == -1:
 		return null
 	return layers[index]
+
+func get_runtime_state() -> Dictionary:
+	return {"block_overrides": get_save_data(),"seed": world_seed}
+
+func load_runtime_state(state: Dictionary):
+	load_save_data(state.get("block_overrides", []))
+	world_seed = state.get("seed", 12345)

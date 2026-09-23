@@ -2,14 +2,8 @@
 
 [ext_resource type="Script" uid="uid://ddnb3jv3xjm70" path="res://player.gd" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://bvdvlqayg5afs" path="res://main.gd" id="1_lquwl"]
-[ext_resource type="Resource" uid="uid://imh2twda1mls" path="res://materials/dirt.tres" id="3_1bvp3"]
-[ext_resource type="Script" uid="uid://dm3le5aqhhefj" path="res://blocks/world.gd" id="3_lquwl"]
-[ext_resource type="Resource" uid="uid://vx8xe7x0lc27" path="res://materials/stone.tres" id="4_lquwl"]
-[ext_resource type="Resource" uid="uid://ihx6x2yaae5j" path="res://materials/air.tres" id="6_7mycd"]
-[ext_resource type="Resource" uid="uid://7hvfsyn3audu" path="res://materials/coal.tres" id="7_272bh"]
-[ext_resource type="Script" uid="uid://blig3hggtxrnn" path="res://world_layer.gd" id="8_4c57u"]
-[ext_resource type="Resource" uid="uid://u7l0cogxmdw2" path="res://layers/dirt_layer.tres" id="9_efxa6"]
-[ext_resource type="Resource" uid="uid://c1mvd7kd7is8w" path="res://layers/stone_layer.tres" id="10_dg77c"]
+[ext_resource type="PackedScene" uid="uid://c5vwj8spdyt6o" path="res://earth.tscn" id="2_272bh"]
+[ext_resource type="PackedScene" uid="uid://c6s8aj0moj321" path="res://base.tscn" id="3_5vw27"]
 [ext_resource type="Script" uid="uid://bg1n2pfvj3qmb" path="res://crafting_system.gd" id="11_efxa6"]
 [ext_resource type="Script" uid="uid://daakpbe15vetw" path="res://crafting/recipes/recipe.gd" id="12_ycdy4"]
 [ext_resource type="Resource" uid="uid://bfdbxbfe61ynn" path="res://crafting/recipes/dirt_pick_recipe.tres" id="13_w48qg"]
@@ -22,6 +16,8 @@ size = Vector2(48, 112)
 
 [node name="Main" type="Node2D" unique_id=2024797900]
 script = ExtResource("1_lquwl")
+earth_scene = ExtResource("2_272bh")
+base_scene = ExtResource("3_5vw27")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1421926348]
 script = ExtResource("1_1bvp3")
@@ -35,14 +31,6 @@ shape = SubResource("RectangleShape2D_tsyb3")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1155315127]
 position_smoothing_enabled = true
-
-[node name="Blocks" type="Node2D" parent="." unique_id=336991214]
-script = ExtResource("3_lquwl")
-dirt = ExtResource("3_1bvp3")
-stone = ExtResource("4_lquwl")
-air = ExtResource("6_7mycd")
-coal = ExtResource("7_272bh")
-layers = Array[ExtResource("8_4c57u")]([ExtResource("9_efxa6"), ExtResource("10_dg77c")])
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=1883444133]
 
@@ -105,3 +93,7 @@ size_flags_vertical = 3
 [node name="CraftingSystem" type="Node" parent="." unique_id=1838512815]
 script = ExtResource("11_efxa6")
 recipes = Array[ExtResource("12_ycdy4")]([ExtResource("13_w48qg")])
+
+[node name="WorldContainer" type="Node2D" parent="." unique_id=55102801]
+
+[node name="Earth" parent="WorldContainer" unique_id=765883023 instance=ExtResource("2_272bh")]

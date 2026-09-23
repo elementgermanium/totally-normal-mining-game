@@ -3,6 +3,7 @@ extends CharacterBody2D
 var inventory: Array[InventorySlot] = []
 @export var SPEED := 300.0
 const JUMP_VELOCITY = -400.0
+const BLOCK_SIZE = 64
 var mining_range = 250
 var mining_target = null
 var mining_progress: float = 0.0
@@ -14,7 +15,6 @@ const HOTBAR_SIZE = 10
 var equipped_tool: Tool = null
 
 @onready var mining_bar = $"../UI/MiningProgress"
-@onready var world = $"../Blocks"
 @onready var hotbar_ui = $"../UI/Hotbar"
 @onready var inventory_menu = $"../UI/InventoryMenu"
 @onready var inventory_list = $"../UI/InventoryMenu/ScrollContainer/InventoryList"
@@ -23,10 +23,15 @@ var equipped_tool: Tool = null
 @onready var crafting_list = $"../UI/CraftingMenu/ScrollContainer/CraftingList"
 @onready var craft_system = $"../CraftingSystem"
 
+var current_world: Subworld
 var hotbar_slot_scene = preload("res://UI/hotbar_slot.tscn")
 var inventory_entry_scene = preload("res://UI/inventory_entry.tscn")
 var crafting_entry_scene = preload("res://UI/crafting_entry.tscn")
+var air = preload("res://materials/air.tres")
 var half_block = 32
+
+func set_current_world(new_world: Subworld):
+	current_world = new_world
 
 func initialize_hotbar_ui():
 	for i in range(HOTBAR_SIZE):
@@ -188,9 +193,9 @@ func _process(delta):
 	if Input.is_action_just_pressed("use_item"):
 		var mouse_position = get_global_mouse_position()
 		var target = get_mouse_block_position()
-		var current_block = world.get_material_at(target)
+		var current_block = current_world.get_material_at(target)
 		if global_position.distance_to(mouse_position) <= placement_range:
-			if current_block == world.air:
+			if current_block == air:
 				var selected_item = get_selected_item()
 				if selected_item == null:
 					return
@@ -200,7 +205,7 @@ func _process(delta):
 					return
 				var can_place = remove_item(selected_item)
 				if can_place == true:
-					world.place_block(target, selected_item)
+					current_world.place_block(target, selected_item)
 
 func _unhandled_input(event: InputEvent):
 	if event.is_action_pressed("inventory_down"):
@@ -218,7 +223,7 @@ func _unhandled_input(event: InputEvent):
 
 func get_mouse_block_position() -> Vector2i:
 	var mouse_position = get_global_mouse_position()
-	return Vector2i(floori((mouse_position.x + half_block) / world.BLOCK_SIZE), floori((mouse_position.y + half_block) / world.BLOCK_SIZE) - 2)
+	return Vector2i(floori((mouse_position.x + half_block) / BLOCK_SIZE), floori((mouse_position.y + half_block) / BLOCK_SIZE) - 2)
 
 func continue_mining(delta):
 	var target = get_mining_target()
@@ -250,7 +255,7 @@ func stop_mining():
 
 func finish_mining():
 	var block_position = mining_target.world_position
-	world.mark_block_mined(block_position)
+	current_world.mark_block_mined(block_position)
 	var loot = mining_target.mine()
 	add_item(loot)
 	stop_mining()
